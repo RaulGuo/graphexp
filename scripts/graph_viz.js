@@ -88,7 +88,7 @@ var graph_viz = (function(){
 			.enter()
 			.append('marker')			
 			.attr('class','arrow')
-			.attr('id', function(d){return 'marker_' + d.id})
+			.attr('id', function(d){return 'marker_' + d.id.relationId})
 			.attr('markerHeight', 5)
 			.attr('markerWidth', 5)
 			.attr('markerUnits', 'strokeWidth')
@@ -234,7 +234,7 @@ var graph_viz = (function(){
 			// remove duplicates links
 			var dic = {};
 			for ( var i=0; i < active_links.length; i++ )
-				dic[active_links[i].id]=active_links[i]; // this will remove the duplicate links (with same id)
+				dic[active_links[i].id.relationId]=active_links[i]; // this will remove the duplicate links (with same id)
 			var list_of_active_links = [];
 			for (var key in dic)
 				list_of_active_links.push(dic[key]);
@@ -327,11 +327,11 @@ var graph_viz = (function(){
 	 
 		//attach the data
 		var all_links = svg_graph.selectAll(".active_edge")
-			.data(_Links, function(d) { return d.id; });
+			.data(_Links, function(d) { return d.id.relationId; });
 		var all_edgepaths = svg_graph.selectAll(".active_edgepath")
-			.data(_Links, function(d) { return d.id; });
+			.data(_Links, function(d) { return d.id.relationId; });
 		var all_edgelabels = svg_graph.selectAll(".active_edgelabel")
-			.data(_Links, function(d) { return d.id; });
+			.data(_Links, function(d) { return d.id.relationId; });
 	  
 		// links not active anymore are classified old_links
 		all_links.exit().classed("old_edge0",true).classed("active_edge",false);

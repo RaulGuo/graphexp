@@ -182,12 +182,12 @@ var graphShapes = (function(){
 		var edges_deco = edges.append("line").attr("class", "edge").classed("active_edge",true)
 			.attr("source_ID",function(d) { return d.source;})
 			.attr("target_ID",function(d) { return d.target;})
-			.attr("ID",function(d) { return d.id;});
+			.attr("ID",function(d) { return d.id.relationId;});
 	 
 
 		graph_viz.create_arrows(edges_deco);
 		// Attach the arrows
-		edges_deco.attr("marker-end", function(d) {return "url(#marker_" + d.id + ")"})
+		edges_deco.attr("marker-end", function(d) {return "url(#marker_" + d.id.relationId + ")"})
 		.attr('stroke-width', edge_stroke_width)
 		.append('title').text(function(d){return d.properties.weight;});
 
@@ -198,7 +198,7 @@ var graphShapes = (function(){
 
 		edgelabels_deco.append('textPath')
 			.attr('class','edge_text')
-			.attr('href', function (d, i) {return '#edgepath' + d.id})
+			.attr('href', function (d, i) {return '#edgepath' + d.id.relationId})
 			.style("text-anchor", "middle")
 			.style("pointer-events", "none")
 			.attr("startOffset", "50%")
@@ -236,16 +236,16 @@ var graphShapes = (function(){
 			.attr('class','edgepath').classed("active_edgepath",true)
 			.attr('fill-opacity',0)
 			.attr('stroke-opacity',0)
-			.attr('id',function (d, i) {return 'edgepath' + d.id;})
-			.attr("ID",function(d) { return d.id;})
+			.attr('id',function (d, i) {return 'edgepath' + d.id.relationId;})
+			.attr("ID",function(d) { return d.id.relationId;})
 			.style("pointer-events", "none");
 
 		var edgelabels_deco = edgelabels.append('text')
 			.attr('dy',-3)
 			.style("pointer-events", "none")
 			.attr('class','edgelabel').classed("active_edgelabel",true)
-			.attr('id',function (d, i) {return 'edgelabel' + d.id})
-			.attr("ID",function(d) { return d.id;})
+			.attr('id',function (d, i) {return 'edgelabel' + d.id.relationId})
+			.attr("ID",function(d) { return d.id.relationId;})
 			.attr('font-size', 10)
 			.attr('fill', edge_label_color);
 
