@@ -30,15 +30,16 @@ var infobox = (function(){
 	// Public function
 	function create(label_graph,label_graphElem){
 		var graph_bar = d3.select(label_graph);
-		graph_bar.append("h2").text("Graph Info")
+		graph_bar.append("h2").text("图的相关信息")
 		_table_Graphinfo = graph_bar.append("table").attr("id","tableGraph");
 		init_table(_table_Graphinfo,["Type","Count"]);
 
 		var graphElem_bar = d3.select(label_graphElem);
-		graphElem_bar.append("h2").text("Item Info")
+		graphElem_bar.append("h2").text("基本信息")
 		_table_IDinfo = graphElem_bar.append("table").attr("id","tableIdDetails");
-		init_table(_table_IDinfo,["Key","Value"]);
-		_table_DBinfo = graphElem_bar.append("table").attr("id","tableDBDetails");
+        init_table(_table_IDinfo,["Key","Value"]);
+        graphElem_bar.append("h2").text("属性信息")
+        _table_DBinfo = graphElem_bar.append("table").attr("id","tableDBDetails");
 		init_table(_table_DBinfo,["Key","Value","Property"]);
 		hide_element(label_graph);
 
@@ -151,7 +152,13 @@ var infobox = (function(){
  			} else {
  				var new_info_row = info_table.append("tr");
  				new_info_row.append("td").text(key).style("font-size",_font_size);
- 				new_info_row.append("td").text(value[subkey].value).style("font-size",_font_size);
+                var service_type = $('#service_type').val();
+                if(service_type == "WebApp") {
+					var prop_value = value[subkey]
+                } else {
+                    var prop_value = value[subkey].value
+				}
+				new_info_row.append("td").text(prop_value).style("font-size",_font_size);
  				new_info_row.append("td").text('').style("font-size",_font_size);
  			}
 		}

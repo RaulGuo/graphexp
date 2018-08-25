@@ -62,7 +62,7 @@ var graphioGremlin = (function(){
 			+gremlin_query_edges+gremlin_query_edges_prop
 			+ "[nodes.toList(),nodesprop.toList(),edges.toList(),edgesprop.toList()]"
 		// while busy, show we're doing something in the messageArea.
-		$('#messageArea').html('<h3>(loading)</h3>');
+		$('#messageArea').html('<h3>加载中……</h3>');
 		var message = ""
 				if(SINGLE_COMMANDS_AND_NO_VARS){
 					var node_label_query = create_single_command(gremlin_query_nodes);
@@ -133,7 +133,7 @@ var graphioGremlin = (function(){
 		console.log(gremlin_query);
 
 		// while busy, show we're doing something in the messageArea.
-		$('#messageArea').html('<h3>(loading)</h3>');
+		$('#messageArea').html('<h3>加载中......</h3>');
 		// To display the queries in the message area:
 		//var message_nodes = "<p>Node query: '"+gremlin_query_nodes+"'</p>";
 		//var message_edges = "<p>Edge query: '"+gremlin_query_edges+"'</p>";
@@ -173,7 +173,7 @@ var graphioGremlin = (function(){
 		var gremlin_query_edges = "edges = " + traversal_source + ".V("+id+").bothE("+(edge_filter?"'"+edge_filter+"'":"")+")";
 		var gremlin_query = gremlin_query_nodes+'\n'+gremlin_query_edges+'\n'+'[nodes.toList(),edges.toList()]'
 		// while busy, show we're doing something in the messageArea.
-		$('#messageArea').html('<h3>(loading)</h3>');
+		$('#messageArea').html('<h3>加载中......</h3>');
 		var message = "<p>Query ID: "+ d.id +"</p>"
 				if(SINGLE_COMMANDS_AND_NO_VARS){
 					var nodeQuery = create_single_command(gremlin_query_nodes);
@@ -213,7 +213,7 @@ var graphioGremlin = (function(){
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	function run_ajax_request(gremlin_query,server_url,query_type,active_node,message, callback){
 		// while busy, show we're doing something in the messageArea.
-		$('#messageArea').html('<h3>(loading)</h3>');
+		$('#messageArea').html('<h3>加载中......</h3>');
 
 		// Get the data from the server
 		$.ajax({
@@ -273,7 +273,7 @@ var graphioGremlin = (function(){
 	// Websocket connection
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
 	function run_websocket_request(gremlin_query,server_url,query_type,active_node,message,callback){
-		$('#messageArea').html('<h3>(loading)</h3>');
+		$('#messageArea').html('<h3>加载中......</h3>');
 
 		var msg = { "requestId": uuidv4(),
 			"op":"eval",
@@ -371,11 +371,11 @@ var graphioGremlin = (function(){
 			_node_properties = make_properties_list(data[1][0]);
 			_edge_properties = make_properties_list(data[3][0]);
 			change_nav_bar(_node_properties,_edge_properties);
-			display_properties_bar(_node_properties,'nodes','Node properties:');
-			display_properties_bar(_edge_properties,'edges','Edge properties:');
-			display_color_choice(_node_properties,'nodes','Node color by:');
+			display_properties_bar(_node_properties,'nodes','显示顶点属性：');
+			display_properties_bar(_edge_properties,'edges','显示边属性：');
+			display_color_choice(_node_properties,'nodes','顶点着色：');
 		} else {
-			//console.log(data);
+			console.log(data);
 			var graph = arrange_data(data);
 			//console.log(graph)
 			if (query_type=='click') var center_f = 0; //center_f=0 mean no attraction to the center for the nodes 
@@ -395,11 +395,13 @@ var graphioGremlin = (function(){
 		var prop_dic = {};
 		for (var prop_str in data){
 			prop_str = prop_str.replace(/[\[\ \"\'\]]/g,''); // get rid of symbols [,",',] and spaces
-			var prop_list = prop_str.split(',');
-			//prop_list = prop_list.map(function (e){e=e.slice(1); return e;});
-			for (var prop_idx in prop_list){
-				prop_dic[prop_list[prop_idx]] = 0;
-			}
+			if(prop_str != ''){
+				var prop_list = prop_str.split(',');
+				//prop_list = prop_list.map(function (e){e=e.slice(1); return e;});
+				for (var prop_idx in prop_list){
+					prop_dic[prop_list[prop_idx]] = 0;
+				}
+            }
 		}
 		var properties_list = [];
 		for (var key in prop_dic){
@@ -550,6 +552,7 @@ function get_vertex_prop_in_list(vertexProperty){
 		get_graph_info : get_graph_info,
 		search_query : search_query,
 		click_query : click_query,
-		send_to_server : send_to_server
+		send_to_server : send_to_server,
+        arrange_datav3 : arrange_datav3
 	}
 })();

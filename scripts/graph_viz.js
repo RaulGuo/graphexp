@@ -498,8 +498,14 @@ var graph_viz = (function(){
 				_svg.selectAll(".old_edgepath"+stop_layer).remove();
 				_svg.selectAll(".old_edgelabel"+stop_layer).remove();
 				infobox.display_info(d);
-				graphioGremlin.click_query(d);              
-				console.log('event!!')
+				
+				var service_type = $('#service_type').val();
+				if(service_type == "WebApp"){
+					riskGraph.clickVertexQuery(d)
+				}else{
+					graphioGremlin.click_query(d);
+				}
+				console.log('click vertex!!')
 			}
 		}
 
