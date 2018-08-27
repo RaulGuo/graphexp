@@ -24,6 +24,7 @@ var riskGraph = (function() {
     var table_Graphinfo = {}
 
     function clickVertexQuery(vtx) {
+        $('#messageArea').html('');
         let app_name = $('#app_name').val();
         // var app_name = "byPhoneIpLpa"
         var vtxId = vtx.id
@@ -46,20 +47,30 @@ var riskGraph = (function() {
                 "edgeLabel": edge_filter_field
             },
             timeout: REST_TIMEOUT,
-            success: function (data, textStatus, jqXHR) {
-                console.log(data)
-                var graph = graphioGremlin.arrange_datav3(data);
-                graph_viz.refresh_data(graph, 0, vtxId);
+            success: function (result, textStatus, jqXHR) {
+                console.log(result)
+                if(result.status == 200){
+                    var data = result.data;
+                    if(data == null || data[0] == null){
+                        $('#messageArea').html("当前查询条件的查询结果为空");
+                    } else {
+                        var graph = graphioGremlin.arrange_datav3(data);
+                        graph_viz.refresh_data(graph, 0, vtxId);
+                    }
+                }else{
+                    $('#messageArea').html(result.message);
+                }
                 //console.log(result)
             },
             error: function (result, status, error) {
                 console.log("Connection failed. " + status);
-
+                $('#messageArea').html(status);
             }
         });
     }
 
     function searchQuery() {
+        $('#messageArea').html('');
         let app_name = $('#app_name').val();
         let property_value = $('#search_value').val();
         let property = $('#search_field').val();
@@ -89,14 +100,23 @@ var riskGraph = (function() {
                 "edgeLabel": edge_filter_field
             },
             timeout: REST_TIMEOUT,
-            success: function (data, textStatus, jqXHR) {
-                console.log(data)
-                var graph = graphioGremlin.arrange_datav3(data);
-                graph_viz.refresh_data(graph, 1, null);
-                //console.log(result)
+            success: function (result, textStatus, jqXHR) {
+                console.log(result)
+                if(result.status == 200){
+                    var data = result.data;
+                    if(data == null || data[0] == null){
+                        $('#messageArea').html("当前查询条件的查询结果为空");
+                    } else {
+                        var graph = graphioGremlin.arrange_datav3(data);
+                        graph_viz.refresh_data(graph, 1, null);
+                    }
+                }else{
+                    $('#messageArea').html(result.message);
+                }
             },
             error: function (result, status, error) {
                 console.log("Connection failed. " + status);
+                $('#messageArea').html(status);
             }
         });
     }
@@ -115,14 +135,17 @@ var riskGraph = (function() {
             contentType: "application/json; charset=utf-8",
             url: server_url,
             timeout: REST_TIMEOUT,
-            success: function (data, textStatus, jqXHR) {
-                console.log(data)
-                displayGraphInfo(data)
-                // graph_viz.refresh_data(graph, 1, null);
-                //console.log(result)
+            success: function (result, textStatus, jqXHR) {
+                if(result.status == 200){
+                    var data = result.data;
+                    displayGraphInfo(data)
+                }else{
+                    $('#messageArea').html(result.message);
+                }
             },
             error: function (result, status, error) {
                 console.log("Connection failed. " + status);
+                $('#messageArea').html(status);
             }
         });
 
